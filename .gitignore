@@ -1,11 +1,28 @@
 #include <stdio.h>
-#include<stdbool.h>
+#include <stdbool.h>
+#include <stdlib.h> // Include this for system("cls")
+
 #define MAX_USERS 200
 #define MAX_USERNAME_LENGTH 25
 #define MAX_PASSWORD_LENGTH 25
 #define MAX_ADMIN 10
 
-//main();
+struct UserData {
+    char username[MAX_USERNAME_LENGTH];
+    char password[MAX_PASSWORD_LENGTH];
+};
+
+// Function declarations
+void admin_signlogin();
+bool admin_login();
+void admin_reg();
+bool isValidEmail(const char *email);
+void customer_signlogin();
+bool customer_login();
+void customer_reg();
+int design();
+void login_design();
+int main();
 
 void admin_sighlogin() // admin signup and registration form
 {
@@ -14,18 +31,21 @@ void admin_sighlogin() // admin signup and registration form
 			"\n\n\t\t\t\t\t\t 2] Create a new Account"
 			"\n\n\t\t\t\t\t\t 3] Back"
 			"\n\n\t\t\t\t\t\t Enter Your choice :"
-			);		
+			);
+			
 	int ch;
 	scanf("%d",&ch);		
 	
 	if(ch == 1)
 	{
 		system("cls");
+		login_design();
 		admin_login();
 	}
 	else if(ch == 2)
 	{
 		system("cls");
+		login_design();
 		admin_reg();
 	}
 	else if(ch == 3)
@@ -36,9 +56,10 @@ void admin_sighlogin() // admin signup and registration form
 	else
 	{
 		printf("\n\n\t\t\t\t\t\tInvalid choice. Please try again.\n");
-	}		
+	}
 }
 
+// Email Varification
 bool isValidEmail(const char *email) {
 	
 	 int at_count = 0,i;
@@ -73,50 +94,52 @@ bool isValidEmail(const char *email) {
 
 }
 
-struct UserData {
-    char username[50];
-    char password[50];
-};
-
-
-admin_login(const char username[], const char password[])
-{
-	struct UserData user;
+//Admin
+bool admin_login() {
+    struct UserData user;
     FILE *file;
 
-    file = fopen("user_data.txt", "rb"); // Open the file for reading
+    file = fopen("admin_data.txt", "r"); // Open the file for reading
 
     if (file == NULL) {
         perror("Error opening file");
-        return 0;
+        return false;
     }
+
+    char username[MAX_USERNAME_LENGTH];
+    char password[MAX_PASSWORD_LENGTH];
+
+    printf("\nEnter your username: ");
+    scanf("%s", username);
+    printf("\nEnter your password: ");
+    scanf("%s", password);
 
     while (fread(&user, sizeof(struct UserData), 1, file)) {
         if (strcmp(user.username, username) == 0 && strcmp(user.password, password) == 0) {
             fclose(file);
-            return 1; // Credentials match
+            return true; // Credentials match
         }
     }
 
     fclose(file);
-    return 0; // Credentials do not match
+    return false; // Credentials do not match
 }
 
-admin_reg()
-{
-	struct UserData user;
+//done file writing but in binary
+void admin_reg() {
+    struct UserData user;
     FILE *file;
 
-    file = fopen("user_data.dat", "ab"); // Open the file for appending
+    file = fopen("admin_data.txt", "a"); // Open the file for appending
 
     if (file == NULL) {
         perror("Error opening file");
         return;
     }
 
-    printf("Enter a username: ");
+    printf("\nEnter a username: ");
     scanf("%s", user.username);
-    printf("Enter a password: ");
+    printf("\nEnter a password: ");
     scanf("%s", user.password);
 
     fwrite(&user, sizeof(struct UserData), 1, file);
@@ -124,7 +147,7 @@ admin_reg()
     fclose(file);
 }
 
-
+//coustomer
 void customer_signlogin()
 {
 	printf("\n\n\t\t\t\t\t\t Login or Sign Up !!"
@@ -140,12 +163,14 @@ void customer_signlogin()
 	if(ch == 1)
 	{
 		system("cls");
-		oprector_login();
+		login_design();
+		customer_login();
 	}
 	else if(ch == 2)
 	{
 		system("cls");
-		oprector_reg();
+		login_design();
+		customer_reg();
 	}
 	else if(ch == 3)
 	{
@@ -158,46 +183,71 @@ void customer_signlogin()
 	}		
 }
 
-oprector_login()
+bool customer_login()
 {
-	char name[30],email[50],password[20];
-	
-	printf("\n\n\t\t\t\t\t------------------------------------------------------------");
-	
-	printf("\n \t\t\t\t Enter a Name :");
-	scanf("%s",&name);
-	
-	printf("\n \t\t\t\t Enter Email:");
-	scanf("%s",&email);
+	struct UserData user;
+	char email[20];
+    FILE *file;
 
- 	if (isValidEmail(email)) 
+    file = fopen("customer_data.txt", "r"); // Open the file for reading
+
+    if (file == NULL) {
+        perror("Error opening file");
+        return false;
+    }
+
+    char username[MAX_USERNAME_LENGTH];
+    char password[MAX_PASSWORD_LENGTH];
+
+    printf("\nEnter your username: ");
+    scanf("%s", username);
+    printf("\nEnter your password: ");
+    scanf("%s", password);
+	printf("\n \t\t\t\t Enter Email:");
+	scanf("%s", email);
+
+	if (isValidEmail(email)) 
  	{
        	printf("Valid email address\n");
     }
-    
 	else
 	{
        	printf("Invalid email address\n");
         return;
     }
-	
-	printf("\n\t\t\t\t\t\tEnter a Password :");
-	scanf("%s",&password);
+
+    while (fread(&user, sizeof(struct UserData), 1, file)) {
+        if (strcmp(user.username, username) == 0 && strcmp(user.password, password) == 0) {
+            fclose(file);
+            return true; // Credentials match
+        }
+    }
+
+    fclose(file);
+    return false; // Credentials do not match
 }
 
-oprector_reg()
+void customer_reg()
 {
-	char name,password;
-	
-	printf("\n\n\t\t\t\t\t------------------------------------------------------------");
-	
-	printf("\n\n\n\n\t\t\t\t\t\tEnter a user name :");
-	scanf("%s",&name);
-	
-	printf("\n\t\t\t\t\t\tEnter a Password :");
-	scanf("%s",&password);
-}
+	struct UserData user;
+    FILE *file;
 
+    file = fopen("customer_data.txt", "a"); // Open the file for appending
+
+    if (file == NULL) {
+        perror("Error opening file");
+        return;
+    }
+
+    printf("\nEnter a username: ");
+    scanf("%s", user.username);
+    printf("\nEnter a password: ");
+    scanf("%s", user.password);
+
+    fwrite(&user, sizeof(struct UserData), 1, file);
+
+    fclose(file);
+}
 
 int design()
 {
@@ -221,7 +271,7 @@ int design()
 	{
 		system("cls");
 		login_design();
-		admin_login();
+		admin_sighlogin();
 	}
 	else if(ch == 2)
 	{
@@ -235,7 +285,7 @@ int design()
 	}
 }
 
- int login_design() //print login page design
+void login_design() //print login page design
  {
  	printf("\n\t\t\t. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
  	printf("\n\t\t\t\t\t\t\t\tLogin Page");
@@ -247,4 +297,6 @@ int main()
 	design();
 	return 0;
 }
+
+
 
