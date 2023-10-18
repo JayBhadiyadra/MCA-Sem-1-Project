@@ -1,52 +1,250 @@
-# Prerequisites
-*.d
+#include <stdio.h>
+#include<stdbool.h>
+#define MAX_USERS 200
+#define MAX_USERNAME_LENGTH 25
+#define MAX_PASSWORD_LENGTH 25
+#define MAX_ADMIN 10
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+//main();
 
-# Linker output
-*.ilk
-*.map
-*.exp
+void admin_sighlogin() // admin signup and registration form
+{
+	printf("\n\n\t\t\t\t\t\t Login or Sign Up !!"
+			"\n\n\t\t\t\t\t\t 1] Login "
+			"\n\n\t\t\t\t\t\t 2] Create a new Account"
+			"\n\n\t\t\t\t\t\t 3] Back"
+			"\n\n\t\t\t\t\t\t Enter Your choice :"
+			);		
+	int ch;
+	scanf("%d",&ch);		
+	
+	if(ch == 1)
+	{
+		system("cls");
+		admin_login();
+	}
+	else if(ch == 2)
+	{
+		system("cls");
+		admin_reg();
+	}
+	else if(ch == 3)
+	{
+		system("cls");
+		main();
+	}	
+	else
+	{
+		printf("\n\n\t\t\t\t\t\tInvalid choice. Please try again.\n");
+	}		
+}
 
-# Precompiled Headers
-*.gch
-*.pch
+bool isValidEmail(const char *email) {
+	
+	 int at_count = 0,i;
+    int dot_count = 0;
+    int last_dot_position = -1;
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
+    
+    for ( i = 0; email[i] != '\0'; i++)
+	{
+        if (email[i] == '@')
+		{
+            at_count++;
+        }
+		else if (email[i] == '.')
+		{
+            dot_count++;
+            last_dot_position = i;
+        }
+    }
+    
+    if (at_count != 1 || dot_count < 1)
+	{
+        return false;
+    }
+    
+    if (email[0] == '@' || email[1] == '.' || email[last_dot_position + 1] == '\0') 
+	{
+        return false;
+    }
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
+    return true;
 
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+}
 
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
+struct UserData {
+    char username[50];
+    char password[50];
+};
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+
+admin_login(const char username[], const char password[])
+{
+	struct UserData user;
+    FILE *file;
+
+    file = fopen("user_data.txt", "rb"); // Open the file for reading
+
+    if (file == NULL) {
+        perror("Error opening file");
+        return 0;
+    }
+
+    while (fread(&user, sizeof(struct UserData), 1, file)) {
+        if (strcmp(user.username, username) == 0 && strcmp(user.password, password) == 0) {
+            fclose(file);
+            return 1; // Credentials match
+        }
+    }
+
+    fclose(file);
+    return 0; // Credentials do not match
+}
+
+admin_reg()
+{
+	struct UserData user;
+    FILE *file;
+
+    file = fopen("user_data.dat", "ab"); // Open the file for appending
+
+    if (file == NULL) {
+        perror("Error opening file");
+        return;
+    }
+
+    printf("Enter a username: ");
+    scanf("%s", user.username);
+    printf("Enter a password: ");
+    scanf("%s", user.password);
+
+    fwrite(&user, sizeof(struct UserData), 1, file);
+
+    fclose(file);
+}
+
+
+void customer_signlogin()
+{
+	printf("\n\n\t\t\t\t\t\t Login or Sign Up !!"
+			"\n\n\t\t\t\t\t\t 1] Login "
+			"\n\n\t\t\t\t\t\t 2] Create a new Account"
+			"\n\n\t\t\t\t\t\t 3] Back"
+			"\n\n\t\t\t\t\t\t Enter Your choice :"
+			);
+			
+	int ch;
+	scanf("%d",&ch);		
+	
+	if(ch == 1)
+	{
+		system("cls");
+		oprector_login();
+	}
+	else if(ch == 2)
+	{
+		system("cls");
+		oprector_reg();
+	}
+	else if(ch == 3)
+	{
+		system("cls");
+		main();
+	}	
+	else
+	{
+		printf("\n\n\t\t\t\t\t\tInvalid choice. Please try again.\n");
+	}		
+}
+
+oprector_login()
+{
+	char name[30],email[50],password[20];
+	
+	printf("\n\n\t\t\t\t\t------------------------------------------------------------");
+	
+	printf("\n \t\t\t\t Enter a Name :");
+	scanf("%s",&name);
+	
+	printf("\n \t\t\t\t Enter Email:");
+	scanf("%s",&email);
+
+ 	if (isValidEmail(email)) 
+ 	{
+       	printf("Valid email address\n");
+    }
+    
+	else
+	{
+       	printf("Invalid email address\n");
+        return;
+    }
+	
+	printf("\n\t\t\t\t\t\tEnter a Password :");
+	scanf("%s",&password);
+}
+
+oprector_reg()
+{
+	char name,password;
+	
+	printf("\n\n\t\t\t\t\t------------------------------------------------------------");
+	
+	printf("\n\n\n\n\t\t\t\t\t\tEnter a user name :");
+	scanf("%s",&name);
+	
+	printf("\n\t\t\t\t\t\tEnter a Password :");
+	scanf("%s",&password);
+}
+
+
+int design()
+{
+	int i,ch;
+	for(i=0;i<4;i++)
+	{
+		printf("\t\t\t\t\t........................................\n");	
+	}
+	printf("\t\t\t\t\t...Welcome To The 'Bhadiyadra's' Hotel..\n");
+	for(i=0;i<4;i++)
+	{
+		printf("\t\t\t\t\t........................................\n");	
+	}
+	printf("\n\n\n\t\t\t\t\tEnter 1 Admin\n");
+	printf("\t\t\t\t\tEnter 2 Customer\n");
+	
+	printf("\n\n\t\t\t\t\tEnter Your Answer:");
+	scanf("%d",&ch);
+	
+	if(ch == 1)
+	{
+		system("cls");
+		login_design();
+		admin_login();
+	}
+	else if(ch == 2)
+	{
+		system("cls");
+		login_design();
+		customer_signlogin();
+	}
+	else
+	{
+		printf("Invalid Choice!!!");
+	}
+}
+
+ int login_design() //print login page design
+ {
+ 	printf("\n\t\t\t. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
+ 	printf("\n\t\t\t\t\t\t\t\tLogin Page");
+ 	printf("\n\t\t\t. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
+ }
+
+int main()
+{
+	design();
+	return 0;
+}
+
