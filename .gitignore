@@ -13,24 +13,25 @@ struct UserData {
 };
 
 // Function declarations
-void admin_signlogin();
+void admin_sglgn();
 bool admin_login();
 void admin_reg();
 bool isValidEmail(const char *email);
-void customer_signlogin();
+void customer_sglgn();
 bool customer_login();
 void customer_reg();
 int design();
-void login_design();
+void login_dsgn();
 int main();
 
-void admin_sighlogin() // admin signup and registration form
+// admin signup and registration form
+void admin_sglgn() 
 {
 	printf("\n\n\t\t\t\t\t\t Login or Sign Up !!"
-			"\n\n\t\t\t\t\t\t 1] Login "
-			"\n\n\t\t\t\t\t\t 2] Create a new Account"
-			"\n\n\t\t\t\t\t\t 3] Back"
-			"\n\n\t\t\t\t\t\t Enter Your choice :"
+			"\n\n\t\t\t\t\t\t 1) Login "
+			"\n\t\t\t\t\t\t 2) Create a new Account"
+			"\n\t\t\t\t\t\t 3) Back"
+			"\n\t\t\t\t\t\t Enter Your choice :"
 			);
 			
 	int ch;
@@ -39,13 +40,13 @@ void admin_sighlogin() // admin signup and registration form
 	if(ch == 1)
 	{
 		system("cls");
-		login_design();
+		login_dsgn();
 		admin_login();
 	}
 	else if(ch == 2)
 	{
 		system("cls");
-		login_design();
+		login_dsgn();
 		admin_reg();
 	}
 	else if(ch == 3)
@@ -94,7 +95,7 @@ bool isValidEmail(const char *email) {
 
 }
 
-//Admin
+//Admin Section
 bool admin_login() {
     struct UserData user;
     FILE *file;
@@ -108,14 +109,17 @@ bool admin_login() {
 
     char username[MAX_USERNAME_LENGTH];
     char password[MAX_PASSWORD_LENGTH];
+    char email[20];
 
-    printf("\nEnter your username: ");
+    printf("\nEnter your Username: ");
     scanf("%s", username);
-    printf("\nEnter your password: ");
+    printf("\nEnter your Password: ");
     scanf("%s", password);
+    printf("\nEnter your Email: ");
+    scanf("%s", email);
 
     while (fread(&user, sizeof(struct UserData), 1, file)) {
-        if (strcmp(user.username, username) == 0 && strcmp(user.password, password) == 0) {
+        if (strcmp(user.username, username) == 0 && strcmp(user.email, email) == 0) {
             fclose(file);
             return true; // Credentials match
         }
@@ -148,12 +152,13 @@ void admin_reg() {
 }
 
 //coustomer
-void customer_signlogin()
+void customer_sglgn()
 {
 	printf("\n\n\t\t\t\t\t\t Login or Sign Up !!"
-			"\n\n\t\t\t\t\t\t 1] Login "
-			"\n\n\t\t\t\t\t\t 2] Create a new Account"
-			"\n\n\t\t\t\t\t\t 3] Back"
+			"\n\n\t\t\t\t\t\t 1) Login "
+			"\n\t\t\t\t\t\t 2) Create a new Account"
+			"\n\t\t\t\t\t\t 3) Back"
+			"\n\t\t\t\t\t\t 4) See Rooms Type"
 			"\n\n\t\t\t\t\t\t Enter Your choice :"
 			);
 			
@@ -163,13 +168,13 @@ void customer_signlogin()
 	if(ch == 1)
 	{
 		system("cls");
-		login_design();
+		login_dsgn();
 		customer_login();
 	}
 	else if(ch == 2)
 	{
 		system("cls");
-		login_design();
+		login_dsgn();
 		customer_reg();
 	}
 	else if(ch == 3)
@@ -249,20 +254,29 @@ void customer_reg()
     fclose(file);
 }
 
+int rooms()
+{
+	printf("\n\n\t\t\t\t\t\t Rooms We Provide !!"
+			"\n\n\t\t\t\t\t\t 1) Single Rooms"
+			"\n\t\t\t\t\t\t 2) Doubble Bed Rooms"
+			"\n\t\t\t\t\t\t 3) King Size Rooms"
+			"\n\n\t\t\t\t\t\t Enter Your choice :"
+			);
+}
 int design()
 {
 	int i,ch;
 	for(i=0;i<4;i++)
 	{
-		printf("\t\t\t\t\t........................................\n");	
+		printf("\t\t\t\t\t~>~>~>~>~>~>~>~>~>~<~<~<~<~<~<~<~<~<~<~\n");	
 	}
-	printf("\t\t\t\t\t...Welcome To The 'Bhadiyadra's' Hotel..\n");
+	printf("\t\t\t\t\t~~Welcome To The 'Bhadiyadra's' Hotel~~\n");
 	for(i=0;i<4;i++)
 	{
-		printf("\t\t\t\t\t........................................\n");	
+		printf("\t\t\t\t\t~>~>~>~>~>~>~>~>~>~<~<~<~<~<~<~<~<~<~<~\n");	
 	}
-	printf("\n\n\n\t\t\t\t\tEnter 1 Admin\n");
-	printf("\t\t\t\t\tEnter 2 Customer\n");
+	printf("\n\n\n\t\t\t\t\tEnter 1) Admin\n");
+	printf("\t\t\t\t\tEnter 2) Customer\n");
 	
 	printf("\n\n\t\t\t\t\tEnter Your Answer:");
 	scanf("%d",&ch);
@@ -270,14 +284,14 @@ int design()
 	if(ch == 1)
 	{
 		system("cls");
-		login_design();
-		admin_sighlogin();
+		login_dsgn();
+		admin_sglgn();
 	}
 	else if(ch == 2)
 	{
 		system("cls");
-		login_design();
-		customer_signlogin();
+		login_dsgn();
+		customer_sglgn();
 	}
 	else
 	{
@@ -285,11 +299,11 @@ int design()
 	}
 }
 
-void login_design() //print login page design
+void login_dsgn() //print login page design
  {
- 	printf("\n\t\t\t. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
- 	printf("\n\t\t\t\t\t\t\t\tLogin Page");
- 	printf("\n\t\t\t. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
+ 	printf("\n\t\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+ 	printf("\n\t\t\t\t\t\t\tLogin Portal");
+ 	printf("\n\t\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
  }
 
 int main()
@@ -297,6 +311,5 @@ int main()
 	design();
 	return 0;
 }
-
 
 
