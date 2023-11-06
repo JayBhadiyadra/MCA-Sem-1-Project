@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include <stdlib.h> // Include this for system("cls")
-
+#include <stdlib.h> 
 #define MAX_USERS 200
 #define MAX_USERNAME_LENGTH 25
 #define MAX_PASSWORD_LENGTH 25
@@ -12,25 +11,29 @@ struct UserData {
     char password[MAX_PASSWORD_LENGTH];
 };
 
+
 // Function declarations
 void admin_sglgn();
 bool admin_login();
 void admin_reg();
+void admin_choice();
 bool isValidEmail(const char *email);
 void customer_sglgn();
 bool customer_login();
 void customer_reg();
+int rooms();
 int design();
 void login_dsgn();
 int main();
 
-// admin signup and registration form
+// admin and registration form(2.1)
 void admin_sglgn() 
 {
 	printf("\n\n\t\t\t\t\t\t Login or Sign Up !!"
 			"\n\n\t\t\t\t\t\t 1) Login "
-			"\n\t\t\t\t\t\t 2) Create a new Account"
+			"\n\t\t\t\t\t\t 2) Admin Choice"
 			"\n\t\t\t\t\t\t 3) Back"
+			"\n\t\t\t\t\t\t 4) Coustomer"
 			"\n\t\t\t\t\t\t Enter Your choice :"
 			);
 			
@@ -43,16 +46,26 @@ void admin_sglgn()
 		login_dsgn();
 		admin_login();
 	}
+//	else if(ch == 2)
+//	{
+//		system("cls");
+//		login_dsgn();
+//		admin_reg();
+//	}
 	else if(ch == 2)
 	{
 		system("cls");
-		login_dsgn();
-		admin_reg();
+		admin_choice();
 	}
 	else if(ch == 3)
 	{
 		system("cls");
 		main();
+	}
+	else if(ch == 4)
+	{
+		system("cls");
+		customer_sglgn();
 	}	
 	else
 	{
@@ -95,12 +108,12 @@ bool isValidEmail(const char *email) {
 
 }
 
-//Admin Section
+//Admin Section(2.1.1)
 bool admin_login() {
     struct UserData user;
     FILE *file;
 
-    file = fopen("admin_data.txt", "r"); // Open the file for reading
+    file = fopen("admin_data.txt", "r");
 
     if (file == NULL) {
         perror("Error opening file");
@@ -115,19 +128,39 @@ bool admin_login() {
     scanf("%s", username);
     printf("\nEnter your Password: ");
     scanf("%s", password);
-    printf("\nEnter your Email: ");
-    scanf("%s", email);
 
     while (fread(&user, sizeof(struct UserData), 1, file)) {
-        if (strcmp(user.username, username) == 0 && strcmp(user.email, email) == 0) {
-            fclose(file);
-            return true; // Credentials match
+        if (strcmp(user.username, username) == 0 && strcmp(user.password, password) == 0) {
+            printf("Login successful!\n");
+            admin_choice(); // Call admin_choice upon successful login.
+            return true;
         }
+        
     }
 
+    system("cls");
+	login_dsgn();
+    //printf("\nLogin failed. Please try again.\n");
+    admin_sglgn(); // Call admin_signlogin upon failed login.
     fclose(file);
-    return false; // Credentials do not match
+    return false;
 }
+
+
+// Your admin_choice function
+void admin_choice() {
+    printf("\n\t\t\t\t\t\tAdmin options:\n"
+			"\n\t\t\t\t\t\t 1) Rooms"
+			"\n\t\t\t\t\t\t 2) Customer Details"
+			"\n\t\t\t\t\t\t 3) Billing"
+			"\n\t\t\t\t\t\t 4) Cancel Booking"
+			"\n\t\t\t\t\t\t Enter Your choice :"
+			);
+	int ch;
+	scanf("%d",&ch);
+}
+
+
 
 //done file writing but in binary
 void admin_reg() {
@@ -146,19 +179,20 @@ void admin_reg() {
     printf("\nEnter a password: ");
     scanf("%s", user.password);
 
-    fwrite(&user, sizeof(struct UserData), 1, file);
+    fprintf(file, "%s %s\n", user.username, user.password);
+	fclose(file);
 
-    fclose(file);
 }
 
-//coustomer
+//coustomer(2.2)
 void customer_sglgn()
 {
 	printf("\n\n\t\t\t\t\t\t Login or Sign Up !!"
 			"\n\n\t\t\t\t\t\t 1) Login "
 			"\n\t\t\t\t\t\t 2) Create a new Account"
-			"\n\t\t\t\t\t\t 3) Back"
-			"\n\t\t\t\t\t\t 4) See Rooms Type"
+			"\n\t\t\t\t\t\t 3) See Rooms Type"
+			"\n\t\t\t\t\t\t 4) Back"
+			"\n\t\t\t\t\t\t 5) Admin"
 			"\n\n\t\t\t\t\t\t Enter Your choice :"
 			);
 			
@@ -180,14 +214,25 @@ void customer_sglgn()
 	else if(ch == 3)
 	{
 		system("cls");
-		main();
+		rooms();
 	}	
+	else if(ch == 4)
+	{
+		system("cls");
+		main();
+	}
+	else if(ch == 5)
+	{
+		system("cls");
+		admin_sglgn();
+	}		
 	else
 	{
 		printf("\n\n\t\t\t\t\t\tInvalid choice. Please try again.\n");
 	}		
 }
 
+//(2.2.1)
 bool customer_login()
 {
 	struct UserData user;
@@ -214,11 +259,14 @@ bool customer_login()
 	if (isValidEmail(email)) 
  	{
        	printf("Valid email address\n");
+       	rooms();
     }
 	else
 	{
        	printf("Invalid email address\n");
-        return;
+       	printf("Enter Email Again\n");
+       	scanf("%s", email);
+//        return;
     }
 
     while (fread(&user, sizeof(struct UserData), 1, file)) {
@@ -231,7 +279,7 @@ bool customer_login()
     fclose(file);
     return false; // Credentials do not match
 }
-
+//(2.2.2)
 void customer_reg()
 {
 	struct UserData user;
@@ -248,32 +296,38 @@ void customer_reg()
     scanf("%s", user.username);
     printf("\nEnter a password: ");
     scanf("%s", user.password);
+//    printf("\nEnter a Email: ");
+//    scanf("%s", user.email);
 
-    fwrite(&user, sizeof(struct UserData), 1, file);
-
-    fclose(file);
+    fprintf(file, "%s %s\n", user.username, user.password);
+	fclose(file);
 }
-
+//(2.2.3)
 int rooms()
 {
 	printf("\n\n\t\t\t\t\t\t Rooms We Provide !!"
-			"\n\n\t\t\t\t\t\t 1) Single Rooms"
-			"\n\t\t\t\t\t\t 2) Doubble Bed Rooms"
-			"\n\t\t\t\t\t\t 3) King Size Rooms"
+			"\n\n\t\t\t\t\t\t 1) Standard Rooms"
+			"\n\t\t\t\t\t\t 2) Deluxe Rooms"
+			"\n\t\t\t\t\t\t 3) Premium Rooms"
+			"\n\t\t\t\t\t\t 4) Back"
 			"\n\n\t\t\t\t\t\t Enter Your choice :"
 			);
+	int ch;
+	scanf("%d",&ch);
 }
+
+//Home Page(1)
 int design()
 {
 	int i,ch;
 	for(i=0;i<4;i++)
 	{
-		printf("\t\t\t\t\t~>~>~>~>~>~>~>~>~>~<~<~<~<~<~<~<~<~<~<~\n");	
+		printf("\t\t\t- . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - .\n");	
 	}
-	printf("\t\t\t\t\t~~Welcome To The 'Bhadiyadra's' Hotel~~\n");
+	printf("\t\t\t- . - . - . - . - Welcome To Hotel Management System- . - . - . - . - . - .\n");
 	for(i=0;i<4;i++)
 	{
-		printf("\t\t\t\t\t~>~>~>~>~>~>~>~>~>~<~<~<~<~<~<~<~<~<~<~\n");	
+		printf("\t\t\t- . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - .\n");	
 	}
 	printf("\n\n\n\t\t\t\t\tEnter 1) Admin\n");
 	printf("\t\t\t\t\tEnter 2) Customer\n");
@@ -311,5 +365,3 @@ int main()
 	design();
 	return 0;
 }
-
-
