@@ -1,77 +1,157 @@
-#include <stdio.h>
+#include<stdio.h>
 #include <stdbool.h>
 #include <stdlib.h> 
+#include <string.h>
 #define MAX_USERS 200
 #define MAX_USERNAME_LENGTH 25
 #define MAX_PASSWORD_LENGTH 25
 #define MAX_ADMIN 10
+
+// Function declarations
+
+int main();
+int design();
+void login_design();
+//int choiceSelection();
+void admin_login_design();
+void customer_login_design();
+int admin_signUpLogin();
+//int AdminChoiceSelection();
+bool isValidEmail(const char *email);
+bool admin_login();
+int admin_choice(); //coding...
+int customer_signlogin();
+//int CustomerChoiceSelection();
+bool customer_login();
+void customer_reg();
+int rooms();
+
+
+int main()
+{
+	design();
+	return 0;
+}
 
 struct UserData {
     char username[MAX_USERNAME_LENGTH];
     char password[MAX_PASSWORD_LENGTH];
 };
 
-
-// Function declarations
-void admin_sglgn();
-bool admin_login();
-void admin_reg();
-void admin_choice();
-bool isValidEmail(const char *email);
-void customer_sglgn();
-bool customer_login();
-void customer_reg();
-int rooms();
-int design();
-void login_dsgn();
-int main();
-
-// admin and registration form(2.1)
-void admin_sglgn() 
+//Home Page(1)
+int design()
 {
-	printf("\n\n\t\t\t\t\t\t Login or Sign Up !!"
-			"\n\n\t\t\t\t\t\t 1) Login "
-			"\n\t\t\t\t\t\t 2) Admin Choice"
-			"\n\t\t\t\t\t\t 3) Back"
-			"\n\t\t\t\t\t\t 4) Coustomer"
-			"\n\t\t\t\t\t\t Enter Your choice :"
-			);
-			
 	int ch;
-	scanf("%d",&ch);		
+	
+	for(int i=0;i<4;i++)
+	{
+		printf("\t\t\t- . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - .\n");	
+	}
+		printf("\t\t\t- . - . - . - . - Welcome To Hotel Management System- . - . - . - . - . - .\n");
+	for(int i=0;i<4;i++)
+	{
+		printf("\t\t\t- . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - .\n");	
+	}
+	
+	printf("\n\n\n\t\t\t\t\tEnter 1) Admin\n");
+	printf("\t\t\t\t\tEnter 2) Customer\n");
+	
+	printf("\n\n\t\t\t\t\tEnter Your Answer:");
+	scanf("%d",&ch);
 	
 	if(ch == 1)
 	{
 		system("cls");
-		login_dsgn();
-		admin_login();
+		admin_login_design();
+		admin_signUpLogin();
 	}
-//	else if(ch == 2)
-//	{
-//		system("cls");
-//		login_dsgn();
-//		admin_reg();
-//	}
 	else if(ch == 2)
 	{
 		system("cls");
+		customer_login_design();
+		customer_signlogin();
+	}
+	else
+	{
+		login_design();
+		printf("Invalid Choice!!!");
+	}
+}
+
+//login page(1.1)
+void login_design() //print login page design
+{
+ 	printf("\n\t\t\t<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>");
+ 	printf("\n\t\t\t\t\t\t\tLogin Portal");
+ 	printf("\n\t\t\t<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>");
+}
+	
+//int choiceSelection(int ch)
+//{
+////	int ch;	
+//}
+
+// admin and registration form(2.1)
+void admin_login_design() //print Admin login page design
+{
+ 	printf("\n\t\t\t<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>");
+ 	printf("\n\t\t\t\t\t\t\t Admin Login Portal");
+ 	printf("\n\t\t\t<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>");
+}
+void customer_login_design() //print Customer login page design
+{
+ 	printf("\n\t\t\t<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>");
+ 	printf("\n\t\t\t\t\t\t\t Customer Login Portal");
+ 	printf("\n\t\t\t<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>--<<-->>");
+}
+
+int admin_signUpLogin() 
+{
+	printf("\n\n\t\t\t\t\t\t Login or Sign Up !!"
+			"\n\n\t\t\t\t\t\t 1) Login "
+			"\n\t\t\t\t\t\t 2) Guest"
+			"\n\t\t\t\t\t\t 3) Back"
+			"\n\t\t\t\t\t\t 4) Coustomer POV"
+			"\n\t\t\t\t\t\t Enter Your choice :"
+			);
+			
+	int ch;
+	scanf("%d",&ch);
+			
+	if(ch == 1)
+	{
+		system("cls");
+		admin_login_design();
+		admin_login();
+		
+	}
+	else if(ch == 2)
+	{
+		system("cls");
+		admin_login_design();
 		admin_choice();
 	}
 	else if(ch == 3)
 	{
 		system("cls");
-		main();
+		design();
 	}
 	else if(ch == 4)
 	{
 		system("cls");
-		customer_sglgn();
+		admin_login_design();
+		customer_signlogin();
 	}	
 	else
 	{
 		printf("\n\n\t\t\t\t\t\tInvalid choice. Please try again.\n");
 	}
 }
+
+//int AdminChoiceSelection(int ch)
+//{		
+////int ch;
+//}		
 
 // Email Varification
 bool isValidEmail(const char *email) {
@@ -139,16 +219,15 @@ bool admin_login() {
     }
 
     system("cls");
-	login_dsgn();
+	admin_login_design();
     //printf("\nLogin failed. Please try again.\n");
-    admin_sglgn(); // Call admin_signlogin upon failed login.
+    admin_login(); // Call admin_signlogin upon failed login.
     fclose(file);
     return false;
 }
 
-
-// Your admin_choice function
-void admin_choice() {
+// admin_choice function
+int admin_choice() {
     printf("\n\t\t\t\t\t\tAdmin options:\n"
 			"\n\t\t\t\t\t\t 1) Rooms"
 			"\n\t\t\t\t\t\t 2) Customer Details"
@@ -158,34 +237,13 @@ void admin_choice() {
 			);
 	int ch;
 	scanf("%d",&ch);
-}
-
-
-
-//done file writing but in binary
-void admin_reg() {
-    struct UserData user;
-    FILE *file;
-
-    file = fopen("admin_data.txt", "a"); // Open the file for appending
-
-    if (file == NULL) {
-        perror("Error opening file");
-        return;
-    }
-
-    printf("\nEnter a username: ");
-    scanf("%s", user.username);
-    printf("\nEnter a password: ");
-    scanf("%s", user.password);
-
-    fprintf(file, "%s %s\n", user.username, user.password);
-	fclose(file);
-
+	
+	return ch;
+	//coding...
 }
 
 //coustomer(2.2)
-void customer_sglgn()
+int customer_signlogin()
 {
 	printf("\n\n\t\t\t\t\t\t Login or Sign Up !!"
 			"\n\n\t\t\t\t\t\t 1) Login "
@@ -197,40 +255,47 @@ void customer_sglgn()
 			);
 			
 	int ch;
-	scanf("%d",&ch);		
+	scanf("%d",&ch);
 	
 	if(ch == 1)
 	{
 		system("cls");
-		login_dsgn();
+		customer_login_design();
 		customer_login();
 	}
 	else if(ch == 2)
 	{
 		system("cls");
-		login_dsgn();
+		customer_login_design();
 		customer_reg();
 	}
 	else if(ch == 3)
 	{
 		system("cls");
+		customer_login_design();
 		rooms();
 	}	
 	else if(ch == 4)
 	{
 		system("cls");
-		main();
+		design();
 	}
 	else if(ch == 5)
 	{
 		system("cls");
-		admin_sglgn();
+		admin_login_design();
+		admin_login();
 	}		
 	else
 	{
 		printf("\n\n\t\t\t\t\t\tInvalid choice. Please try again.\n");
-	}		
+	}
 }
+
+//int CustomerChoiceSelection(int ch)
+//{
+////int ch;		
+//}
 
 //(2.2.1)
 bool customer_login()
@@ -279,6 +344,7 @@ bool customer_login()
     fclose(file);
     return false; // Credentials do not match
 }
+
 //(2.2.2)
 void customer_reg()
 {
@@ -302,6 +368,7 @@ void customer_reg()
     fprintf(file, "%s %s\n", user.username, user.password);
 	fclose(file);
 }
+
 //(2.2.3)
 int rooms()
 {
@@ -314,54 +381,4 @@ int rooms()
 			);
 	int ch;
 	scanf("%d",&ch);
-}
-
-//Home Page(1)
-int design()
-{
-	int i,ch;
-	for(i=0;i<4;i++)
-	{
-		printf("\t\t\t- . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - .\n");	
-	}
-	printf("\t\t\t- . - . - . - . - Welcome To Hotel Management System- . - . - . - . - . - .\n");
-	for(i=0;i<4;i++)
-	{
-		printf("\t\t\t- . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - . - .\n");	
-	}
-	printf("\n\n\n\t\t\t\t\tEnter 1) Admin\n");
-	printf("\t\t\t\t\tEnter 2) Customer\n");
-	
-	printf("\n\n\t\t\t\t\tEnter Your Answer:");
-	scanf("%d",&ch);
-	
-	if(ch == 1)
-	{
-		system("cls");
-		login_dsgn();
-		admin_sglgn();
-	}
-	else if(ch == 2)
-	{
-		system("cls");
-		login_dsgn();
-		customer_sglgn();
-	}
-	else
-	{
-		printf("Invalid Choice!!!");
-	}
-}
-
-void login_dsgn() //print login page design
- {
- 	printf("\n\t\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
- 	printf("\n\t\t\t\t\t\t\tLogin Portal");
- 	printf("\n\t\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
- }
-
-int main()
-{
-	design();
-	return 0;
 }
